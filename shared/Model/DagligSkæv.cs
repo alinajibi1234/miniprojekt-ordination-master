@@ -22,6 +22,7 @@ public class DagligSkæv : Ordination {
 	}
 
 	public override double doegnDosis() {
+<<<<<<< HEAD
 		// TODO: Implement!
 		double sum = 0;
 
@@ -31,6 +32,14 @@ public class DagligSkæv : Ordination {
 		}
 		
         return sum;
+=======
+		double sum = 0;
+		foreach (Dosis d in doser)
+		{
+			sum += d.antal;
+		}
+		return sum;
+>>>>>>> Ordinationer-implementering
 	}
 
 	public override String getType() {
