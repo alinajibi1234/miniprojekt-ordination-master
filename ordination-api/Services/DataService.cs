@@ -227,7 +227,7 @@ public string AnvendOrdination(int id, Dato dato) {
         
 
         if (patient == null || laegemiddel == null) {
-            return -1;
+            throw new ArgumentNullException("Patient eller lægemiddel findes ikke");
         }
 
         if (patient.vaegt < 25)
