@@ -183,8 +183,32 @@ public class DataService
     
 public string AnvendOrdination(int id, Dato dato) {
         // TODO: Implement!
-        return null!;
-    }
+        
+        var ordination = db.Ordinationer.FirstOrDefault(o => o.OrdinationId == id);
+
+        if (ordination == null)
+        {
+            return "fejl, ordination med id ikke fundet";
+        }
+
+        if (ordination is PN pn)
+        {
+            bool succes = pn.givDosis(dato);
+
+            if (succes)
+            {
+                
+                return "Succes: Dosis er registreret på datoen " + dato.dato.ToShortDateString();
+            } else {
+                return "Fejl: Datoen er uden for ordinationens gyldighedsperiode.";
+            }
+        }
+
+        // Hvis det ikke var en PN
+        return "Fejl: Denne type ordination (ikke PN) understøtter ikke manuel registrering.";
+}
+        
+     
 
     /// <summary>
     /// Den anbefalede dosis for den pågældende patient, per døgn, hvor der skal tages hensyn til
