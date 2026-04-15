@@ -219,7 +219,33 @@ public string AnvendOrdination(int id, Dato dato) {
     /// <returns></returns>
 	public double GetAnbefaletDosisPerDøgn(int patientId, int laegemiddelId) {
         // TODO: Implement!
-        return -1;
+        
+        var patient  = db.Patienter.FirstOrDefault(p => p.PatientId == patientId);
+        var laegemiddel = db.Laegemiddler.FirstOrDefault(l => l.LaegemiddelId == laegemiddelId);
+
+        double anbefaletdosis = 0;
+        
+
+        if (patient == null || laegemiddel == null) {
+            return -1;
+        }
+
+        if (patient.vaegt < 25)
+        {
+            anbefaletdosis = patient.vaegt * laegemiddel.enhedPrKgPrDoegnLet;
+        }
+        else if (patient.vaegt > 120)
+        {
+            anbefaletdosis = patient.vaegt * laegemiddel.enhedPrKgPrDoegnTung;
+        }
+
+        else
+        {
+            anbefaletdosis = patient.vaegt * laegemiddel.enhedPrKgPrDoegnNormal;
+        }
+        
+        
+        return anbefaletdosis;
 	}
     
 }
