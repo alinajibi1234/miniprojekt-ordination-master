@@ -23,6 +23,21 @@ public class PN : Ordination {
 
     public override double doegnDosis() {
     	// TODO: Implement!
+	    if (dates.Count() == 0)
+		    
+	    {
+		   return 0;
+	    }
+	    
+	    DateTime tidligst = dates.Min(d => d.dato);
+	    DateTime senest = dates.Max(d => d.dato);
+
+	    double antaldage = (senest - tidligst).TotalDays + 1;
+	   
+	    double resultat = (dates.Count * antalEnheder) / antaldage;
+	    return resultat; 
+	    
+	    
         return -1;
     }
 
