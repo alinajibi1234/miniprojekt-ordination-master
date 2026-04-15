@@ -1,12 +1,13 @@
 namespace shared.Model;
+using System.Linq;
 
 public class PN : Ordination {
-	public double antalEnheder { get; set; }
+    public double antalEnheder { get; set; }
     public List<Dato> dates { get; set; } = new List<Dato>();
 
     public PN (DateTime startDen, DateTime slutDen, double antalEnheder, Laegemiddel laegemiddel) : base(laegemiddel, startDen, slutDen) {
-		this.antalEnheder = antalEnheder;
-	}
+        this.antalEnheder = antalEnheder;
+    }
 
     public PN() : base(null!, new DateTime(), new DateTime()) {
     }
@@ -17,40 +18,37 @@ public class PN : Ordination {
     /// Returner false ellers og datoen givesDen ignoreres
     /// </summary>
     public bool givDosis(Dato givesDen) {
-        // TODO: Implement!
+        if (givesDen.dato.Date >= startDen.Date && givesDen.dato.Date <= slutDen.Date) {
+            dates.Add(givesDen);
+            return true;
+        }
+
         return false;
     }
 
     public override double doegnDosis() {
-    	// TODO: Implement!
-	    if (dates.Count() == 0)
-		    
-	    {
-		   return 0;
-	    }
-	    
-	    DateTime tidligst = dates.Min(d => d.dato);
-	    DateTime senest = dates.Max(d => d.dato);
+        if (dates.Count == 0) {
+            return 0;
+        }
 
-	    double antaldage = (senest - tidligst).TotalDays + 1;
-	   
-	    double resultat = (dates.Count * antalEnheder) / antaldage;
-	    return resultat; 
+        DateTime minDate = dates.Min(d => d.dato).Date;
+        DateTime maxDate = dates.Max(d => d.dato).Date;
 	    
-	    
-        return -1;
+        int dage = (maxDate - minDate).Days +1;
+
+        return samletDosis() / dage;
     }
 
 
     public override double samletDosis() {
-        return dates.Count() * antalEnheder;
+        return dates.Count * antalEnheder;
     }
 
     public int getAntalGangeGivet() {
-        return dates.Count();
+        return dates.Count;
     }
 
-	public override String getType() {
-		return "PN";
-	}
+    public override String getType() {
+        return "PN";
+    }
 }
