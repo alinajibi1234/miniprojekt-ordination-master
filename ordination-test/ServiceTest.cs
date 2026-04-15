@@ -47,9 +47,12 @@ public class ServiceTest
     {
         // Herunder skal man så kalde noget kode,
         // der smider en exception.
-
+        int ugyldigtPatientId = 999;
+        int laegemiddelId = 1;
+        
         // Hvis koden _ikke_ smider en exception,
         // så fejler testen.
+        service.GetAnbefaletDosisPerDøgn(ugyldigtPatientId, laegemiddelId);
 
         Console.WriteLine("Her kommer der ikke en exception. Testen fejler.");
     }
