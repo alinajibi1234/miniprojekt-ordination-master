@@ -191,7 +191,8 @@ public class DataService
         DateTime slutDato)
     {
 
-        var patient = db.Patienter.Include(p => p.ordinationer).FirstOrDefault(p => p.PatientId == p.PatientId);
+        var patient = db.Patienter.Include(p => p.ordinationer)
+                .FirstOrDefault(p => p.PatientId == patientId); 
         var laegemiddel = db.Laegemiddler.FirstOrDefault(l => l.LaegemiddelId == laegemiddelId);
 
         if (patient != null && laegemiddel != null)
