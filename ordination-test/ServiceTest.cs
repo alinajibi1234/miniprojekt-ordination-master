@@ -32,13 +32,15 @@ public class ServiceTest
     {
         Patient patient = service.GetPatienter().First();
         Laegemiddel lm = service.GetLaegemidler().First();
+    
+        // Gem antallet som det ser ud lige nu (f.eks. 1)
+        int antalFoer = service.GetDagligFaste().Count();
 
-        Assert.AreEqual(1, service.GetDagligFaste().Count());
-
+        // Act
         service.OpretDagligFast(patient.PatientId, lm.LaegemiddelId,
             2, 2, 1, 0, DateTime.Now, DateTime.Now.AddDays(3));
-
-        Assert.AreEqual(1, service.GetDagligFaste().Count());
+        // Nu tjekker vi, om der er præcis 1 mere end før
+        Assert.AreEqual(antalFoer + 1, service.GetDagligFaste().Count());
     }
     
     [TestMethod]
