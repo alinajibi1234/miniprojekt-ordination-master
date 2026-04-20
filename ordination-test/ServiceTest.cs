@@ -35,8 +35,7 @@ public class ServiceTest
     
         // Gem antallet som det ser ud lige nu (f.eks. 1)
         int antalFoer = service.GetDagligFaste().Count();
-
-        // Act
+        
         service.OpretDagligFast(patient.PatientId, lm.LaegemiddelId,
             2, 2, 1, 0, DateTime.Now, DateTime.Now.AddDays(3));
         // Nu tjekker vi, om der er præcis 1 mere end før
@@ -57,8 +56,7 @@ public class ServiceTest
         // Bemærk: Din DataService metode kræver måske en liste af 'Dosis' objekter
         DateTime startDato = DateTime.Now;
         DateTime slutDato = DateTime.Now.AddDays(3);
-
-        // 2. Act
+        
         // Her kalder vi din service. Husk at tjekke din metodes signatur i DataService.
         // Typisk sender man en liste af doser med.
         service.OpretDagligSkaev(patient.PatientId, lm.LaegemiddelId, 
@@ -67,8 +65,7 @@ public class ServiceTest
                 new Dosis(DateTime.Now.Date.AddHours(20), 1) // kl. 20:00, 1 enhed
             }.ToArray(), 
             startDato, slutDato);
-
-        // 3. Assert
+        
         // Vi tjekker om listen er blevet én længere
         Assert.AreEqual(antalFoer + 1, service.GetDagligSkæve().Count());
     }
@@ -87,5 +84,17 @@ public class ServiceTest
         service.GetAnbefaletDosisPerDøgn(ugyldigtPatientId, laegemiddelId);
         
         Console.WriteLine("Her kommer der ikke en exception. Testen fejler.");
+    }
+    
+    [TestMethod]
+    [ExpectedException(typeof(ArgumentException))]
+    public void OpretPN_SlutDatoFoerStartDato_ThrowsException()
+    {
+        // Arrange
+        Patient patient = service.GetPatienter().First();
+        Laegemiddel lm = service.GetLaegemidler().First();
+
+        // Her sætter vi startdatoen til 10 dage frem og slutdatoen til nu
+        service.OpretPN(patient.PatientId, lm.LaegemiddelId, 2, DateTime.Now.AddDays(10), DateTime.Now);
     }
 }
