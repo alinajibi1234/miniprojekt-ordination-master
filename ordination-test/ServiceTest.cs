@@ -40,6 +40,36 @@ public class ServiceTest
 
         Assert.AreEqual(1, service.GetDagligFaste().Count());
     }
+    
+    [TestMethod]
+    public void OpretDagligSkaev()
+    {
+      
+        Patient patient = service.GetPatienter().First();
+        Laegemiddel lm = service.GetLaegemidler().First();
+    
+        // Vi gemmer antallet før vi opretter for at kunne sammenligne
+        int antalFoer = service.GetDagligSkæve().Count();
+
+        // Vi laver nogle test-doser (f.eks. to tidspunkter på døgnet)
+        // Bemærk: Din DataService metode kræver måske en liste af 'Dosis' objekter
+        DateTime startDato = DateTime.Now;
+        DateTime slutDato = DateTime.Now.AddDays(3);
+
+        // 2. Act
+        // Her kalder vi din service. Husk at tjekke din metodes signatur i DataService.
+        // Typisk sender man en liste af doser med.
+        service.OpretDagligSkaev(patient.PatientId, lm.LaegemiddelId, 
+            new List<Dosis> { 
+                new Dosis(DateTime.Now.Date.AddHours(8), 2), // kl. 08:00, 2 enheder
+                new Dosis(DateTime.Now.Date.AddHours(20), 1) // kl. 20:00, 1 enhed
+            }.ToArray(), 
+            startDato, slutDato);
+
+        // 3. Assert
+        // Vi tjekker om listen er blevet én længere
+        Assert.AreEqual(antalFoer + 1, service.GetDagligSkæve().Count());
+    }
 
     [TestMethod]
     [ExpectedException(typeof(ArgumentNullException))]
