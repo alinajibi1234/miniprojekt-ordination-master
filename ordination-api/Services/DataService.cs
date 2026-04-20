@@ -165,13 +165,26 @@ public class DataService
         return pn;
     }
 
-    public DagligFast OpretDagligFast(int patientId, int laegemiddelId,
-        double antalMorgen, double antalMiddag, double antalAften, double antalNat,
-        DateTime startDato, DateTime slutDato)
+    public DagligFast OpretDagligFast(int patientId, int laegemiddelId, double antalMorgen, double antalMiddag, double antalAften, double antalNat, DateTime startDato, DateTime slutDato)
     {
+        var patient = db.Patienter
+            .Include(p => p.ordinationer)
+            .FirstOrDefault(p => p.PatientId == patientId);
+            
+        var laegemiddel = db.Laegemiddler
+            .FirstOrDefault(l => l.LaegemiddelId == laegemiddelId);
 
-        // TODO: Implement!
-        return null!;
+        if (patient == null || laegemiddel == null)
+        {
+            throw new ArgumentException("Patient eller lægemiddel blev ikke fundet");
+        }
+        
+        var dagligFast = new DagligFast(startDato, slutDato, laegemiddel, antalMorgen, antalMiddag, antalAften, antalNat);
+        
+        patient.ordinationer.Add(dagligFast);
+        db.SaveChanges();
+
+        return dagligFast;
     }
 
     public DagligSkæv OpretDagligSkaev(int patientId, int laegemiddelId, Dosis[] doser, DateTime startDato,
