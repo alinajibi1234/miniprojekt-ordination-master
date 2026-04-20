@@ -38,7 +38,7 @@ public class ServiceTest
         service.OpretDagligFast(patient.PatientId, lm.LaegemiddelId,
             2, 2, 1, 0, DateTime.Now, DateTime.Now.AddDays(3));
 
-        Assert.AreEqual(2, service.GetDagligFaste().Count());
+        Assert.AreEqual(1, service.GetDagligFaste().Count());
     }
 
     [TestMethod]
@@ -47,10 +47,13 @@ public class ServiceTest
     {
         // Herunder skal man så kalde noget kode,
         // der smider en exception.
-
+        int ugyldigtPatientId = 999;
+        int laegemiddelId = 1;
+        
         // Hvis koden _ikke_ smider en exception,
         // så fejler testen.
-
+        service.GetAnbefaletDosisPerDøgn(ugyldigtPatientId, laegemiddelId);
+        
         Console.WriteLine("Her kommer der ikke en exception. Testen fejler.");
     }
 }

@@ -4,7 +4,7 @@ public class DagligSkæv : Ordination {
     public List<Dosis> doser { get; set; } = new List<Dosis>();
 
     public DagligSkæv(DateTime startDen, DateTime slutDen, Laegemiddel laegemiddel) : base(laegemiddel, startDen, slutDen) {
-	}
+    }
 
     public DagligSkæv(DateTime startDen, DateTime slutDen, Laegemiddel laegemiddel, Dosis[] doser) : base(laegemiddel, startDen, slutDen) {
         this.doser = doser.ToList();
@@ -13,27 +13,24 @@ public class DagligSkæv : Ordination {
     public DagligSkæv() : base(null!, new DateTime(), new DateTime()) {
     }
 
-	public void opretDosis(DateTime tid, double antal) {
+    public void opretDosis(DateTime tid, double antal) {
         doser.Add(new Dosis(tid, antal));
     }
 
-	public override double samletDosis() {
-		return base.antalDage() * doegnDosis();
-	}
+    public override double samletDosis() {
+        return base.antalDage() * doegnDosis();
+    }
 
-	public override double doegnDosis() {
-		// TODO: Implement!
-		double sum = 0;
-
-		foreach (var d in doser)
-		{
-			sum += d.antal;
-		}
-		
+    public override double doegnDosis() {
+        double sum = 0;
+        foreach (Dosis d in doser)
+        {
+            sum += d.antal;
+        }
         return sum;
-	}
+    }
 
-	public override String getType() {
-		return "DagligSkæv";
-	}
+    public override String getType() {
+        return "DagligSkæv";
+    }
 }
