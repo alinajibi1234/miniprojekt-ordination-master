@@ -170,6 +170,9 @@ public class DataService
 
     public DagligFast OpretDagligFast(int patientId, int laegemiddelId, double antalMorgen, double antalMiddag, double antalAften, double antalNat, DateTime startDato, DateTime slutDato)
     {
+        if (startDato > slutDato) {
+            throw new ArgumentException("Startdato må ikke være efter slutdato");
+        }
         var patient = db.Patienter
             .Include(p => p.ordinationer)
             .FirstOrDefault(p => p.PatientId == patientId);
@@ -193,6 +196,9 @@ public class DataService
     public DagligSkæv OpretDagligSkaev(int patientId, int laegemiddelId, Dosis[] doser, DateTime startDato,
         DateTime slutDato)
     {
+        if (startDato > slutDato) {
+            throw new ArgumentException("Startdato må ikke være efter slutdato");
+        }
 
         var patient = db.Patienter.Include(p => p.ordinationer)
                 .FirstOrDefault(p => p.PatientId == patientId); 
