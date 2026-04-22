@@ -21,7 +21,7 @@ public class DataService
     /// </summary>
     public void SeedData()
     {
-
+        db.Database.EnsureCreated();
         // Patients
         Patient[] patients = new Patient[5];
         patients[0] = db.Patienter.FirstOrDefault()!;
@@ -141,6 +141,9 @@ public class DataService
 
     public PN OpretPN(int patientId, int laegemiddelId, double antal, DateTime startDato, DateTime slutDato)
     {
+        if (startDato > slutDato) {
+            throw new ArgumentException("Startdato må ikke være efter slutdato");
+        }
         var patient = db.Patienter
             .Include(p => p.ordinationer)
             .FirstOrDefault(p => p.PatientId == patientId);
@@ -167,6 +170,9 @@ public class DataService
 
     public DagligFast OpretDagligFast(int patientId, int laegemiddelId, double antalMorgen, double antalMiddag, double antalAften, double antalNat, DateTime startDato, DateTime slutDato)
     {
+        if (startDato > slutDato) {
+            throw new ArgumentException("Startdato må ikke være efter slutdato");
+        }
         var patient = db.Patienter
             .Include(p => p.ordinationer)
             .FirstOrDefault(p => p.PatientId == patientId);
@@ -190,8 +196,12 @@ public class DataService
     public DagligSkæv OpretDagligSkaev(int patientId, int laegemiddelId, Dosis[] doser, DateTime startDato,
         DateTime slutDato)
     {
+        if (startDato > slutDato) {
+            throw new ArgumentException("Startdato må ikke være efter slutdato");
+        }
 
-        var patient = db.Patienter.Include(p => p.ordinationer).FirstOrDefault(p => p.PatientId == p.PatientId);
+        var patient = db.Patienter.Include(p => p.ordinationer)
+                .FirstOrDefault(p => p.PatientId == patientId); 
         var laegemiddel = db.Laegemiddler.FirstOrDefault(l => l.LaegemiddelId == laegemiddelId);
 
         if (patient != null && laegemiddel != null)
