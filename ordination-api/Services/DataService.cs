@@ -220,12 +220,12 @@ public class DataService
             db.SaveChanges();
             return nySkæv;
         }
-        //Returneres hvis lægemiddel eller patienten ikke findes
+        
         return null!;
     }
     
 public string AnvendOrdination(int id, Dato dato) {
-        // TODO: Implement!
+        
         
         var ordination = db.Ordinationer.FirstOrDefault(o => o.OrdinationId == id);
 
@@ -261,7 +261,7 @@ public string AnvendOrdination(int id, Dato dato) {
     /// <param name="laegemiddel"></param>
     /// <returns></returns>
 	public double GetAnbefaletDosisPerDøgn(int patientId, int laegemiddelId) {
-        // TODO: Implement!
+        
         
         var patient  = db.Patienter.FirstOrDefault(p => p.PatientId == patientId);
         var laegemiddel = db.Laegemiddler.FirstOrDefault(l => l.LaegemiddelId == laegemiddelId);
