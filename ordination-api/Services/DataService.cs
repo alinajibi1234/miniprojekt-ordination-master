@@ -215,7 +215,7 @@ public class DataService
                 nySkæv.doser.Add(d);
             }
 
-            //Her tilføjer vi  ordinationen til patienten og herfter gemmes den i databasen
+            //Her tilføjer vi  ordinationen til patienten og  gemmes den i databasen
             patient.ordinationer.Add(nySkæv);
             db.SaveChanges();
             return nySkæv;
