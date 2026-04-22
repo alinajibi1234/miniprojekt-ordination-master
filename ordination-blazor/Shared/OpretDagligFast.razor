@@ -66,9 +66,17 @@
         
         <div class="form-group row">
             <div class="col-sm-8">
-            <button class="btn btn-primary" @onclick="Opret">Opret ordination</button>
-            <button class="btn btn-secondary" @onclick="() => onFortryd?.Invoke()">Fortryd</button>
+                <button class="btn btn-primary" @onclick="Opret" disabled="@(StartDato > SlutDato)">Opret ordination</button>
+                <button class="btn btn-secondary" @onclick="() => onFortryd?.Invoke()">Fortryd</button>
             </div>
+            
+            @if (StartDato > SlutDato)
+            {
+                <div class="alert alert-danger mt-2">
+                    Startdatoen kan ikke være efter slutdatoen. Det anbefales at vælge en startdato før slutdatoen.
+                </div>
+            }
+
         </div>
     </div>
 </div>
